@@ -25,6 +25,10 @@
   const letterMessage    = document.getElementById("letterMessage");
   const btnCloseEnvelope = document.getElementById("btnCloseEnvelope");
   const readCounter      = document.getElementById("readCounter");
+  
+  // Dedicated Voice Elements
+  const letterVoiceBtn   = document.getElementById("letterVoiceBtn");
+  const voiceMessageAudio = document.getElementById("voiceMessage");
 
   /* ---------- STATE TRACKING ---------- */
   // Track indices that have already been read
@@ -92,6 +96,39 @@
       musicIcon.textContent = "🔇";
     }
   });
+
+  /* ============================================================
+     VOICE NOTE INTERACTION HANDLER
+     ============================================================ */
+  window.playVoiceMessage = function () {
+    if (!voiceMessageAudio) return;
+
+    if (voiceMessageAudio.paused) {
+      // Lower background music volume so the greeting is crystal clear
+      if (bgMusic && !bgMusic.paused) {
+        bgMusic.volume = 0.15;
+      }
+      voiceMessageAudio.play();
+      letterVoiceBtn.innerHTML = "⏸ Pause Voice Note";
+    } else {
+      voiceMessageAudio.pause();
+      letterVoiceBtn.innerHTML = "▶ Play Voice Note";
+      // Restore default music volume structure if background music is live
+      if (bgMusic && !bgMusic.paused) {
+        bgMusic.volume = TARGET_VOLUME;
+      }
+    }
+  };
+
+  // Reset parameters when audio clip finishes running naturally
+  if (voiceMessageAudio) {
+    voiceMessageAudio.addEventListener("ended", () => {
+      letterVoiceBtn.innerHTML = "▶ Play Voice Note";
+      if (bgMusic && !bgMusic.paused) {
+        bgMusic.volume = TARGET_VOLUME;
+      }
+    });
+  }
 
   /* ============================================================
      SCREEN TRANSITION: landing -> main
@@ -234,6 +271,19 @@
     letterName.textContent = entry.name;
     letterMessage.textContent = entry.message;
 
+    // Voice tracking injection logic
+    if (entry.hasVoice && voiceMessageAudio && letterVoiceBtn) {
+      const source = voiceMessageAudio.querySelector("source");
+      if (source) {
+        source.src = entry.voiceFile;
+        voiceMessageAudio.load(); // Forces elements to dump buffer caches and pull path changes
+      }
+      letterVoiceBtn.style.display = "block";
+      letterVoiceBtn.innerHTML = "▶ Play Voice Note";
+    } else if (letterVoiceBtn) {
+      letterVoiceBtn.style.display = "none";
+    }
+
     envelope.classList.remove("open", "fade-envelope");
     envelopeOverlay.classList.remove("hidden");
 
@@ -241,7 +291,7 @@
       setTimeout(() => {
         envelope.classList.add("open");
         
-        // Once the letter slides all the way out (approx 1200ms after opening transitions start), fade out the outer envelope envelope shell
+        // Once the letter slides all the way out (approx 1200ms after opening transitions start), fade out the outer envelope shell
         setTimeout(() => {
           envelope.classList.add("fade-envelope");
         }, 1100);
@@ -253,6 +303,15 @@
   function closeEnvelope() {
     envelopeOverlay.classList.add("hidden");
     envelope.classList.remove("open", "fade-envelope");
+    
+    // Clear audio execution states immediately upon modal dismissal
+    if (voiceMessageAudio) {
+      voiceMessageAudio.pause();
+      voiceMessageAudio.currentTime = 0;
+    }
+    if (bgMusic && !bgMusic.paused) {
+      bgMusic.volume = TARGET_VOLUME; // Restore background baseline layout volume levels
+    }
     
     // If an item was successfully drawn and opened, mark it as read upon closing
     if (currentWinner !== null) {
