@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday, Jass! 🍓</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- floating petal/leaf layer, lives behind everything -->
+<div class="petal-layer" id="petalLayer" aria-hidden="true"></div>
+
+<!-- ============ SCREEN 1 : GREETING / LANDING ============ -->
+<section class="screen" id="screenLanding">
+  <div class="landing-card">
+    <p class="eyebrow">a little something for</p>
+    <h1 class="title-script">Jass</h1>
+    <p class="landing-text">
+      Hiii Jassy 🍓 before anything else — happy, happy birthday.
+      <br>
+      A few people wanted to tell you something today.
+      <br>
+      Turn the volume up a bit, and when you're ready —
+    </p>
+    <button class="btn-strawberry" id="btnEnter">
+      <span class="btn-icon">🍓</span> click me
+    </button>
+  </div>
+</section>
+
+<!-- ============ SCREEN 2 : MAIN PAGE ============ -->
+<section class="screen hidden" id="screenMain">
+
+  <header class="main-header">
+    <!-- Read Counter Layer -->
+    <div class="read-counter" id="readCounter">0/3 🍓</div>
+    <p class="eyebrow">happy birthday</p>
+    <h1 class="title-script title-script--small">Jass!</h1>
+    <p class="main-sub">spin the wheel to see who left you a message 🍓🍃</p>
+  </header>
+
+  <div class="wheel-area">
+    <div class="wheel-pointer" aria-hidden="true">🍓</div>
+    <div class="wheel-wrap">
+      <canvas id="wheelCanvas" width="520" height="520"></canvas>
+      <button class="wheel-hub" id="btnSpin" aria-label="Spin the wheel">
+        SPIN
+      </button>
+    </div>
+  </div>
+
+  <p class="hint" id="spinHint">tap the wheel to spin 🍃</p>
+
+  <button class="btn-music" id="btnMusicToggle" aria-label="Toggle music">
+    <span id="musicIcon">🔊</span>
+  </button>
+</section>
+
+<!-- ============ ENVELOPE / LETTER OVERLAY ============ -->
+<div class="overlay hidden" id="envelopeOverlay">
+  <div class="overlay-bg" id="overlayBg"></div>
+
+  <div class="envelope-stage">
+    <div class="envelope" id="envelope">
+      <div class="envelope-back"></div>
+      <div class="letter" id="letterPaper">
+        <div class="letter-inner">
+          <p class="letter-from">from</p>
+          <h2 class="letter-name" id="letterName">Name</h2>
+          <div class="letter-divider">🍓</div>
+          <p class="letter-message" id="letterMessage"></p>
+        </div>
+      </div>
+      <div class="envelope-flap" id="envelopeFlap"></div>
+      <div class="envelope-front"></div>
+      <div class="envelope-seal" id="envelopeSeal">🍓</div>
+    </div>
+  </div>
+
+  <button class="btn-close" id="btnCloseEnvelope">close ✕</button>
+</div>
+
+<!-- ============ AUDIO ============ -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="audio/dahil-minahal-mo-ako.mp3" type="audio/mpeg">
+</audio>
+
+<script src="messages.js"></script>
+<script src="script.js"></script>
+<script>
+  // Safety net: if messages.js / script.js failed to load (wrong path,
+  // or opened as a local file:// URL where browsers block local script
+  // loading), this shows a visible message instead of a silently dead button.
+  window.addEventListener("load", function () {
+    if (typeof GREETINGS === "undefined" || !window.__jassScriptLoaded) {
+      var landing = document.getElementById("screenLanding");
+      if (landing) {
+        var warn = document.createElement("p");
+        warn.style.cssText = "margin-top:18px;color:#C73B5E;font-size:0.8rem;font-family:Quicksand,sans-serif;";
+        warn.textContent = "⚠️ Scripts didn't load. If you opened this file by double-clicking it, please serve the folder with a local server (or via GitHub Pages) instead of opening index.html directly — browsers block local scripts on file:// pages.";
+        landing.querySelector(".landing-card").appendChild(warn);
+      }
+    }
+  });
+</script>
+</body>
+</html>
