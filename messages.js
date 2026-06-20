@@ -20,11 +20,11 @@ const GREETINGS = [
   {
     name: "Greciah",
     message: "Hi jass! happy birthday to youu!! \nkumusta na? I hope you are doing just fine. Miss kana ng VAKENGAME kase VAKENGAME isn't VAKENGAME without V. As the college journey is coming, i wish you well on your academics, strive and always do your best but don't forget to put a smile in your face even though sometimes the battle seems so hard. Know that you are always loved by many including us. Wish you all the best and enjoy your day! HAPPY BIRTHDAY"
-  }
+  },
    {
   name: "Michaela",
   message: "Sent a voice message! Click below to listen to her birthday greeting. 🎧",
   hasVoice: true,
   voiceFile: "micay-voice.mp3"
-}
+},
 ];
