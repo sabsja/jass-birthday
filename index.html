@@ -73,6 +73,13 @@
           <h2 class="letter-name" id="letterName">Name</h2>
           <div class="letter-divider">🍓</div>
           <p class="letter-message" id="letterMessage"></p>
+          
+          <!-- Voice Message Playback Block Trigger -->
+          <div style="text-align: center; margin-top: 20px;">
+            <button type="button" id="letterVoiceBtn" class="btn-strawberry" onclick="playVoiceMessage()" style="display: none; margin: 0 auto; padding: 10px 22px; font-size: 0.9rem; font-family: 'Quicksand', sans-serif;">
+              ▶ Play Voice Note
+            </button>
+          </div>
         </div>
       </div>
       <div class="envelope-flap" id="envelopeFlap"></div>
@@ -85,8 +92,14 @@
 </div>
 
 <!-- ============ AUDIO ============ -->
+<!-- Main Background Track File -->
 <audio id="bgMusic" loop preload="auto">
   <source src="dahil-minahal-mo-ako.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Micay Dedicated Voice Track File -->
+<audio id="voiceMessage" preload="auto">
+  <source src="micay-voice.mp3" type="audio/mpeg">
 </audio>
 
 <script src="messages.js"></script>
